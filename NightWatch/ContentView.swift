@@ -9,16 +9,34 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        HStack{
+            VStack(alignment: .leading) {
+                Text("Nightly Tasks")
+                Text("Check all windows")
+                Text("Check all doors")
+                Text("Check that the safe is loocked")
+                Text("Check the mailbox")
+                Text("Inspect security cameras")
+                Text("Clear ice from sidewalks")
+                Text("Document \"strange and unusual \" occurences")
+                Text("Weekly Tasks")
+                Text("Check inside all vacant rooms")
+                Text("Walk the perimeter of the property")
+                Text("Monthly Tasks")
+                Text("Test security alarms")
+                Text("Test motion detectors")
+                Text("Test smoke alarms")
+                Spacer()
+            }
+            Spacer()
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
 }
+
+#Preview("ContentView Landscape", traits: .landscapeRight, body: {
+    ContentView()
+})
