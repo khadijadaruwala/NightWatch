@@ -7,29 +7,50 @@
 
 import SwiftUI
 
+let nightlyTasks = ["Check all windows", "Check all doors", "Check that the safe is loocked","Check the mailbox", "Inspect security cameras", "Clear ice from sidewalks", "Document \"strange and unusual\" occurences"]
+
+let weeklyTasks = ["Check inside all vacant rooms", "Walk the perimeter of the property"]
+
+let monthlyTasks = ["Test security alarms", "Test motion detectors", "Test smoke alarms"]
+
 struct ContentView: View {
     var body: some View {
-        HStack{
-            VStack(alignment: .leading) {
-                Text("\(Image(systemName: "moon.stars")) Nightly Tasks").headerStyle()
-                Text("Check all windows")
-                Text("Check all doors")
-                Text("Check that the safe is loocked")
-                Text("Check the mailbox")
-                Text("Inspect security cameras")
-                Text("Clear ice from sidewalks")
-                Text("Document \"strange and unusual \" occurences")
-                Text("\(Image(systemName: "sunset")) Weekly Tasks").headerStyle().padding(.top)
-                Text("Check inside all vacant rooms")
-                Text("Walk the perimeter of the property")
-                Text("\(Image(systemName: "calendar")) Monthly Tasks").headerStyle().padding(.top)
-                Text("Test security alarms")
-                Text("Test motion detectors")
-                Text("Test smoke alarms")
-                Spacer()
-            }.foregroundStyle(.gray)
-            Spacer()
-        }.padding(.all)
+        List {
+            
+            Section {
+                ForEach(nightlyTasks, id: \.self){ taskName in
+                    Text(taskName)
+                }
+            } header: {
+                HStack {
+                    Image(systemName: "moon.stars")
+                    Text("Nightly Tasks")
+                }.headerStyle()
+            }
+            
+            Section {
+                ForEach(weeklyTasks, id: \.self){ taskName in
+                    Text(taskName)
+                }
+            } header: {
+                HStack{
+                    Image(systemName: "sunset")
+                    Text("Weekly Tasks")
+                }.headerStyle()
+            }
+            
+            Section {
+                
+                ForEach(monthlyTasks, id: \.self){ taskName in
+                    Text(taskName)
+                }
+            } header: {
+                HStack{
+                    Image(systemName: "calendar")
+                    Text("Monthly Tasks")
+                }.headerStyle()
+            }
+        }.listStyle(GroupedListStyle())
     }
 }
 
@@ -39,7 +60,6 @@ struct HeaderStyle: ViewModifier {
             .fontWeight(.heavy)
             .foregroundStyle(.yellow)
             .textCase(.uppercase)
-            .underline()
     }
 }
 
