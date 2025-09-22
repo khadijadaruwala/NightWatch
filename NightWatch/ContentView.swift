@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Bindable var nightWalkViewModel: NightWalkViewModel
     @State private var focusModeOn: Bool = false
+    @State private var showResetAlert = false
     
     var body: some View {
         NavigationStack {
@@ -86,11 +87,36 @@ struct ContentView: View {
                     .toggleStyle(.switch)
                     .frame(width: 175)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     EditButton()
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                    showResetAlert = true
+                    } label: {
+                        Text("Reset")
+                    }
+                }
             }
-        }
+        }.alert("Reset Tasks", isPresented: $showResetAlert,actions: {
+            Button(role: .cancel){
+                
+            } label:{
+              Text("Cancel")
+            }
+            
+            Button(role: .destructive){
+                let refreshedNightWalkViewModel = NightWalkViewModel()
+                nightWalkViewModel.nightlyTasks = refreshedNightWalkViewModel.nightlyTasks
+                nightWalkViewModel.monthlyTasks = refreshedNightWalkViewModel.monthlyTasks
+                nightWalkViewModel.weeklyTasks = refreshedNightWalkViewModel.weeklyTasks
+            } label:{
+                Text("Yes, reset it")
+            }
+           
+        }, message: {
+            Text("Are you sure you want to reset all tasks?")
+        })
     }
 }
 
@@ -137,7 +163,6 @@ struct TaskRow: View {
                 Text(task.name)
             }
         }
-        
     }
 }
 
