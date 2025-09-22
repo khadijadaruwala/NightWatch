@@ -7,21 +7,18 @@
 
 import SwiftUI
 
-let nightlyTasks = ["Check all windows", "Check all doors", "Check that the safe is loocked","Check the mailbox", "Inspect security cameras", "Clear ice from sidewalks", "Document \"strange and unusual\" occurences"]
-
-let weeklyTasks = ["Check inside all vacant rooms", "Walk the perimeter of the property"]
-
-let monthlyTasks = ["Test security alarms", "Test motion detectors", "Test smoke alarms"]
-
 struct ContentView: View {
+   @Bindable var nightWalkViewModel: NightWalkViewModel
     var body: some View {
         NavigationStack {
             List {
                 
                 Section {
-                    ForEach(nightlyTasks, id: \.self){ taskName in
-                        NavigationLink(taskName) {
-                            DetailView(taskName: taskName)
+                    ForEach($nightWalkViewModel.nightlyTasks){ task in
+                        NavigationLink {
+                            DetailView(task: task)
+                        } label: {
+                            TaskRow(task: task.wrappedValue)
                         }
                     }
                 } header: {
@@ -29,9 +26,11 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    ForEach(weeklyTasks, id: \.self){ taskName in
-                        NavigationLink(taskName) {
-                            DetailView(taskName: taskName)
+                    ForEach($nightWalkViewModel.weeklyTasks){ task in
+                        NavigationLink {
+                            DetailView(task: task)
+                        } label: {
+                            TaskRow(task: task.wrappedValue)
                         }
                     }
                 } header: {
@@ -40,9 +39,11 @@ struct ContentView: View {
                 
                 Section {
                     
-                    ForEach(monthlyTasks, id: \.self){ taskName in
-                        NavigationLink(taskName) {
-                            DetailView(taskName: taskName)
+                    ForEach($nightWalkViewModel.monthlyTasks){ task in
+                        NavigationLink {
+                            DetailView(task: task)
+                        } label: {
+                            TaskRow(task: task.wrappedValue)
                         }
                     }
                 } header: {
@@ -81,14 +82,32 @@ struct TaskSectionHeader: View {
     }
 }
 
+struct TaskRow: View {
+    let task: NightWatchTask
+    
+    var body: some View {
+        if task.isComplete{
+            HStack{
+                Image(systemName: "checkmark.square")
+                Text(task.name)
+                    .foregroundStyle(.gray)
+                    .strikethrough()
+            }
+        } else {
+            HStack{
+                Image(systemName: "square")
+                Text(task.name)
+            }
+        }
+        
+    }
+}
+
 
 #Preview {
-    ContentView()
+    ContentView(nightWalkViewModel: NightWalkViewModel())
 }
 
 #Preview("ContentView Landscape", traits: .landscapeRight, body: {
-    ContentView()
+    ContentView(nightWalkViewModel: NightWalkViewModel())
 })
-
-
-
