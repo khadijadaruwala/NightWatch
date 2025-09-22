@@ -8,17 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-   @Bindable var nightWalkViewModel: NightWalkViewModel
+    @Bindable var nightWalkViewModel: NightWalkViewModel
+    @State private var focusModeOn: Bool = false
+    
     var body: some View {
         NavigationStack {
             List {
                 
                 Section {
                     ForEach($nightWalkViewModel.nightlyTasks){ task in
-                        NavigationLink {
-                            DetailView(task: task)
-                        } label: {
-                            TaskRow(task: task.wrappedValue)
+                        
+                        if !focusModeOn || (focusModeOn && !task.wrappedValue.isComplete) {
+                            NavigationLink {
+                                DetailView(task: task)
+                            } label: {
+                                TaskRow(task: task.wrappedValue)
+                            }
                         }
                     }
                 } header: {
@@ -27,10 +32,12 @@ struct ContentView: View {
                 
                 Section {
                     ForEach($nightWalkViewModel.weeklyTasks){ task in
-                        NavigationLink {
-                            DetailView(task: task)
-                        } label: {
-                            TaskRow(task: task.wrappedValue)
+                        if !focusModeOn || (focusModeOn && !task.wrappedValue.isComplete) {
+                            NavigationLink {
+                                DetailView(task: task)
+                            } label: {
+                                TaskRow(task: task.wrappedValue)
+                            }
                         }
                     }
                 } header: {
@@ -40,10 +47,12 @@ struct ContentView: View {
                 Section {
                     
                     ForEach($nightWalkViewModel.monthlyTasks){ task in
-                        NavigationLink {
-                            DetailView(task: task)
-                        } label: {
-                            TaskRow(task: task.wrappedValue)
+                        if !focusModeOn || (focusModeOn && !task.wrappedValue.isComplete) {
+                            NavigationLink {
+                                DetailView(task: task)
+                            } label: {
+                                TaskRow(task: task.wrappedValue)
+                            }
                         }
                     }
                 } header: {
@@ -52,6 +61,16 @@ struct ContentView: View {
             }
             .listStyle(GroupedListStyle())
             .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    
+                    Toggle(isOn: $focusModeOn) {
+                        Text("Focus Mode")
+                    }
+                    .toggleStyle(.switch)
+                    .frame(width: 175)
+                }
+            }
         }
     }
 }
