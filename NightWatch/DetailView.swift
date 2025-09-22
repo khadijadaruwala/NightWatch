@@ -12,6 +12,9 @@ struct DetailView: View {
     
     var body: some View {
         VStack {
+            Image("FloorPlan")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
             Text(task.name)
             Button {
                 task.isComplete = true
