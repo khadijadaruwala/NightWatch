@@ -21,41 +21,32 @@ struct ContentView: View {
                 Section {
                     ForEach(nightlyTasks, id: \.self){ taskName in
                         NavigationLink(taskName) {
-                            Text(taskName)
+                            DetailView(taskName: taskName)
                         }
                     }
                 } header: {
-                    HStack {
-                        Image(systemName: "moon.stars")
-                        Text("Nightly Tasks")
-                    }.headerStyle()
+                    TaskSectionHeader(symbolSystemName: "moon.stars", headerText: "Nightly Tasks")
                 }
                 
                 Section {
                     ForEach(weeklyTasks, id: \.self){ taskName in
                         NavigationLink(taskName) {
-                            Text(taskName)
+                            DetailView(taskName: taskName)
                         }
                     }
                 } header: {
-                    HStack{
-                        Image(systemName: "sunset")
-                        Text("Weekly Tasks")
-                    }.headerStyle()
+                    TaskSectionHeader(symbolSystemName: "sunset", headerText: "Weekly Tasks")
                 }
                 
                 Section {
                     
                     ForEach(monthlyTasks, id: \.self){ taskName in
                         NavigationLink(taskName) {
-                            Text(taskName)
+                            DetailView(taskName: taskName)
                         }
                     }
                 } header: {
-                    HStack{
-                        Image(systemName: "calendar")
-                        Text("Monthly Tasks")
-                    }.headerStyle()
+                    TaskSectionHeader(symbolSystemName: "calendar", headerText: "Monthly Tasks")
                 }
             }
             .listStyle(GroupedListStyle())
@@ -79,6 +70,18 @@ extension View{
     }
 }
 
+struct TaskSectionHeader: View {
+    let symbolSystemName: String
+    let headerText: String
+    var body: some View {
+        HStack {
+            Image(systemName: symbolSystemName)
+            Text(headerText)
+        }.headerStyle()
+    }
+}
+
+
 #Preview {
     ContentView()
 }
@@ -86,3 +89,6 @@ extension View{
 #Preview("ContentView Landscape", traits: .landscapeRight, body: {
     ContentView()
 })
+
+
+
