@@ -14,10 +14,8 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                
                 Section {
                     ForEach($nightWalkViewModel.nightlyTasks){ task in
-                        
                         if !focusModeOn || (focusModeOn && !task.wrappedValue.isComplete) {
                             NavigationLink {
                                 DetailView(task: task)
@@ -25,6 +23,12 @@ struct ContentView: View {
                                 TaskRow(task: task.wrappedValue)
                             }
                         }
+                    }
+                    .onDelete { indexSet in
+                        nightWalkViewModel.nightlyTasks.remove(atOffsets: indexSet)
+                    }
+                    .onMove { indices, newOffset in
+                        nightWalkViewModel.nightlyTasks.move(fromOffsets: indices, toOffset: newOffset)
                     }
                 } header: {
                     TaskSectionHeader(symbolSystemName: "moon.stars", headerText: "Nightly Tasks")
@@ -39,6 +43,12 @@ struct ContentView: View {
                                 TaskRow(task: task.wrappedValue)
                             }
                         }
+                    }
+                    .onDelete { indexSet in
+                        nightWalkViewModel.weeklyTasks.remove(atOffsets: indexSet)
+                    }
+                    .onMove { indices, newOffset in
+                        nightWalkViewModel.weeklyTasks.move(fromOffsets: indices, toOffset: newOffset)
                     }
                 } header: {
                     TaskSectionHeader(symbolSystemName: "sunset", headerText: "Weekly Tasks")
@@ -55,6 +65,12 @@ struct ContentView: View {
                             }
                         }
                     }
+                    .onDelete { indexSet in
+                        nightWalkViewModel.monthlyTasks.remove(atOffsets: indexSet)
+                    }
+                    .onMove { indices, newOffset in
+                        nightWalkViewModel.monthlyTasks.move(fromOffsets: indices, toOffset: newOffset)
+                    }
                 } header: {
                     TaskSectionHeader(symbolSystemName: "calendar", headerText: "Monthly Tasks")
                 }
@@ -69,6 +85,9 @@ struct ContentView: View {
                     }
                     .toggleStyle(.switch)
                     .frame(width: 175)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
                 }
             }
         }
